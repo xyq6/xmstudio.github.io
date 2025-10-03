@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星梦工作室</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.5;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 团队LOGO样式 */
+        .team-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 主页面样式 */
+        #main-page {
+            min-height: 100vh;
+            padding: 100px 0 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .intro-section {
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .intro-text {
+            font-size: 24px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .highlight {
+            color: #007AFF;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .highlight:hover {
+            text-decoration: underline;
+        }
+        
+        /* 打字动画效果 - 最终版 */
+        .typewriter-container {
+            display: inline-block;
+            position: relative;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(40, end);
+        }
+        
+        .typewriter-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #007AFF;
+            margin-left: 2px;
+            animation: blink-cursor 0.75s step-end 4, hide-cursor 0.1s 3.5s forwards;
+            vertical-align: middle;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-cursor {
+            from, to { opacity: 1 }
+            50% { opacity: 0 }
+        }
+        
+        @keyframes hide-cursor {
+            to { opacity: 0 }
+        }
+        
+        /* 哔哩哔哩链接样式 */
+        .bilibili-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background-color: #fb7299;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(251, 114, 153, 0.3);
+        }
+        
+        .bilibili-link:hover {
+            background-color: #ff8ab0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(251, 114, 153, 0.4);
+        }
+        
+        .bilibili-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        /* 内部人员区域样式 */
+        .internal-section {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+        
+        .internal-link {
+            font-size: 14px;
+            color: #007AFF;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .internal-link:hover {
+            color: #0056CC;
+            text-decoration: underline;
+        }
+        
+        /* 页面内容样式 */
+        .page-content {
+            min-height: 100vh;
+            padding: 100px 0 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+            text-align: center;
+        }
+        
+        .page-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #424245;
+            margin-bottom: 30px;
+            max-width: 800px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .back-btn {
+            padding: 12px 30px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 40px auto 0;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+        }
+        
+        .back-btn:hover {
+            background-color: #0056CC;
+        }
+        
+        /* 密码输入区域样式 */
+        .password-section {
+            max-width: 400px;
+            margin: 0 auto 40px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .password-input:focus {
+            border-color: #007AFF;
+            outline: none;
+        }
+        
+        .submit-btn {
+            padding: 12px 30px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0056CC;
+        }
+        
+        .internal-info {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .info-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1d1d1f;
+        }
+        
+        .info-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        /* 欢迎页面样式 */
+        #welcome-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+        }
+        
+        .welcome-logo {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 30px;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .welcome-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        .enter-btn {
+            padding: 15px 40px;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .enter-btn:hover {
+            background-color: white;
+            color: #1d1d1f;
+        }
+        
+        /* 页面切换动画 */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .team-logo {
+                top: 15px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .intro-text {
+                font-size: 20px;
+                padding: 0 20px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .title {
+                font-size: 36px;
+            }
+            
+            .welcome-logo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 团队LOGO -->
+    <div class="team-logo" id="home-logo">
+        <img src="team-logo.png" alt="星梦工作室LOGO">
+    </div>
+
+    <!-- 欢迎页面 -->
+    <section id="welcome-page" class="fade-in">
+        <div class="welcome-logo">
+            <img src="team-logo.png" alt="星梦工作室LOGO">
+        </div>
+        <h1 class="title">星梦工作室</h1>
+        <button class="enter-btn" id="enter-btn">进入官网</button>
+    </section>
+
+    <!-- 主页面 -->
+    <section id="main-page" class="page-content">
+        <div class="container">
+            <div class="intro-section">
+                <p class="intro-text">
+                    <span class="typewriter-container">
+                        <span class="typewriter">一个由初中生建立的团队，主要涉及方面为</span>
+                        <span class="typewriter-cursor"></span>
+                    </span>
+                    <br><br>
+                    <a href="media.html" class="highlight">自媒体</a>
+                    及
+                    <a href="tech.html" class="highlight">信息技术</a>
+                </p>
+                
+                <!-- 哔哩哔哩链接 -->
+                <a href="https://space.bilibili.com/1364232155" target="_blank" class="bilibili-link">
+                    <i class="fab fa-bilibili bilibili-icon"></i>
+                    关注我们的哔哩哔哩
+                </a>
+            </div>
+        </div>
+        
+        <!-- 内部人员链接 -->
+        <div class="internal-section">
+            <a href="internal.html" class="internal-link">内部人员</a>
+        </div>
+    </section>
+
+    <script>
+        // 页面元素
+        const welcomePage = document.getElementById('welcome-page');
+        const mainPage = document.getElementById('main-page');
+        const enterBtn = document.getElementById('enter-btn');
+        const teamLogo = document.getElementById('home-logo');
+
+        // 初始隐藏所有页面，只显示欢迎页面
+        function initPages() {
+            mainPage.style.display = 'none';
+            welcomePage.style.display = 'flex';
+            teamLogo.style.display = 'none';
+            
+            // 检查URL参数，决定显示哪个页面
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = urlParams.get('page');
+            
+            if (page === 'main') {
+                showMainPage();
+            }
+        }
+
+        // 团队LOGO点击事件 - 返回主页
+        teamLogo.addEventListener('click', function() {
+            window.location.href = 'index.html?page=main';
+        });
+        
+        // 进入官网按钮点击事件
+        enterBtn.addEventListener('click', function() {
+            showMainPage();
+            // 更新URL而不刷新页面
+            history.pushState({page: 'main'}, '星梦工作室 - 主页', '?page=main');
+        });
+        
+        // 显示主页面
+        function showMainPage() {
+            // 淡出欢迎页
+            welcomePage.style.opacity = '0';
+            
+            // 延迟显示主页面
+            setTimeout(function() {
+                welcomePage.style.display = 'none';
+                mainPage.style.display = 'flex';
+                mainPage.classList.add('fade-in');
+                teamLogo.style.display = 'block';
+            }, 500);
+        }
+        
+        // 处理浏览器前进/后退按钮
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page === 'main') {
+                showMainPage();
+            } else {
+                // 返回欢迎页面
+                welcomePage.style.display = 'flex';
+                welcomePage.classList.add('fade-in');
+                mainPage.style.display = 'none';
+                teamLogo.style.display = 'none';
+            }
+        });
+        
+        // 初始化页面
+        initPages();
+    </script>
+</body>
+</html>
