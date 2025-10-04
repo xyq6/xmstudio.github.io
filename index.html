@@ -94,7 +94,7 @@
             text-decoration: underline;
         }
         
-        /* 打字动画效果 - 重新实现 */
+        /* 打字动画效果 - 修复初始状态 */
         .typewriter-container {
             display: inline-block;
             position: relative;
@@ -107,6 +107,9 @@
             margin: 0 auto;
             width: 0;
             border-right: 2px solid #007AFF;
+        }
+        
+        .typewriter-text.animate {
             animation: typing 3.5s steps(40, end) forwards, blink-cursor 0.75s step-end infinite;
         }
         
@@ -427,7 +430,10 @@
             const page = urlParams.get('page');
             
             if (page === 'main') {
-                showMainPage();
+                // 使用setTimeout确保页面完全加载后再显示主页面
+                setTimeout(() => {
+                    showMainPage();
+                }, 100);
             }
         }
 
@@ -453,8 +459,10 @@
             mainPage.classList.add('fade-in');
             teamLogo.style.display = 'block';
             
-            // 启动打字动画
-            startTypewriterAnimation();
+            // 延迟启动打字动画，确保DOM完全渲染
+            setTimeout(() => {
+                startTypewriterAnimation();
+            }, 300);
         }
         
         // 启动打字动画
@@ -463,13 +471,13 @@
             
             if (typewriterText) {
                 // 重置动画
-                typewriterText.style.animation = 'none';
+                typewriterText.classList.remove('animate');
                 
                 // 强制重绘
                 void typewriterText.offsetWidth;
                 
                 // 重新应用动画
-                typewriterText.style.animation = 'typing 3.5s steps(40, end) forwards, blink-cursor 0.75s step-end infinite';
+                typewriterText.classList.add('animate');
             }
         }
         
@@ -486,8 +494,10 @@
             }
         });
         
-        // 初始化页面
-        initPages();
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            initPages();
+        });
     </script>
 </body>
 </html>
