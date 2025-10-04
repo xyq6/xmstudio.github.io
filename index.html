@@ -443,9 +443,11 @@
             }
         }
 
-        // 团队LOGO点击事件 - 返回主页
+        // 团队LOGO点击事件 - 直接返回主页
         teamLogo.addEventListener('click', function() {
-            window.location.href = 'index.html?page=main';
+            showMainPage();
+            // 更新URL而不刷新页面
+            history.pushState({page: 'main'}, '星梦工作室 - 主页', '?page=main');
         });
         
         // 进入官网按钮点击事件
@@ -457,16 +459,11 @@
         
         // 显示主页面
         function showMainPage() {
-            // 淡出欢迎页
-            welcomePage.style.opacity = '0';
-            
-            // 延迟显示主页面
-            setTimeout(function() {
-                welcomePage.style.display = 'none';
-                mainPage.style.display = 'flex';
-                mainPage.classList.add('fade-in');
-                teamLogo.style.display = 'block';
-            }, 500);
+            // 直接显示主页面，跳过欢迎页面
+            welcomePage.style.display = 'none';
+            mainPage.style.display = 'flex';
+            mainPage.classList.add('fade-in');
+            teamLogo.style.display = 'block';
         }
         
         // 处理浏览器前进/后退按钮
