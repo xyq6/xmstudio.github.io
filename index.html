@@ -94,7 +94,7 @@
             text-decoration: underline;
         }
         
-        /* 打字动画效果 - 最终版 */
+        /* 打字动画效果 - 修复版 */
         .typewriter-container {
             display: inline-block;
             position: relative;
@@ -104,7 +104,9 @@
             overflow: hidden;
             white-space: nowrap;
             margin: 0 auto;
-            animation: typing 3.5s steps(40, end);
+            width: 0;
+            animation: typing 3.5s steps(40, end) forwards;
+            animation-delay: 0.5s;
         }
         
         .typewriter-cursor {
@@ -113,8 +115,8 @@
             height: 1.2em;
             background-color: #007AFF;
             margin-left: 2px;
-            animation: blink-cursor 0.75s step-end 4, hide-cursor 0.1s 3.5s forwards;
             vertical-align: middle;
+            animation: blink-cursor 0.75s step-end infinite;
         }
         
         @keyframes typing {
@@ -125,10 +127,6 @@
         @keyframes blink-cursor {
             from, to { opacity: 1 }
             50% { opacity: 0 }
-        }
-        
-        @keyframes hide-cursor {
-            to { opacity: 0 }
         }
         
         /* 哔哩哔哩链接样式 */
@@ -464,6 +462,30 @@
             mainPage.style.display = 'flex';
             mainPage.classList.add('fade-in');
             teamLogo.style.display = 'block';
+            
+            // 重置打字动画
+            resetTypewriterAnimation();
+        }
+        
+        // 重置打字动画
+        function resetTypewriterAnimation() {
+            const typewriter = document.querySelector('.typewriter');
+            const cursor = document.querySelector('.typewriter-cursor');
+            
+            if (typewriter && cursor) {
+                // 重置动画
+                typewriter.style.animation = 'none';
+                cursor.style.animation = 'none';
+                
+                // 强制重绘
+                void typewriter.offsetWidth;
+                void cursor.offsetWidth;
+                
+                // 重新应用动画
+                typewriter.style.animation = 'typing 3.5s steps(40, end) forwards';
+                typewriter.style.animationDelay = '0.5s';
+                cursor.style.animation = 'blink-cursor 0.75s step-end infinite';
+            }
         }
         
         // 处理浏览器前进/后退按钮
