@@ -94,29 +94,20 @@
             text-decoration: underline;
         }
         
-        /* 打字动画效果 - 修复版 */
+        /* 打字动画效果 - 重新实现 */
         .typewriter-container {
             display: inline-block;
             position: relative;
         }
         
-        .typewriter {
+        .typewriter-text {
+            display: inline-block;
             overflow: hidden;
             white-space: nowrap;
             margin: 0 auto;
             width: 0;
-            animation: typing 3.5s steps(40, end) forwards;
-            animation-delay: 0.5s;
-        }
-        
-        .typewriter-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background-color: #007AFF;
-            margin-left: 2px;
-            vertical-align: middle;
-            animation: blink-cursor 0.75s step-end infinite;
+            border-right: 2px solid #007AFF;
+            animation: typing 3.5s steps(40, end) forwards, blink-cursor 0.75s step-end infinite;
         }
         
         @keyframes typing {
@@ -125,8 +116,8 @@
         }
         
         @keyframes blink-cursor {
-            from, to { opacity: 1 }
-            50% { opacity: 0 }
+            from, to { border-color: transparent }
+            50% { border-color: #007AFF }
         }
         
         /* 哔哩哔哩链接样式 */
@@ -396,8 +387,7 @@
             <div class="intro-section">
                 <p class="intro-text">
                     <span class="typewriter-container">
-                        <span class="typewriter">一个由初中生建立的团队，主要涉及方面为</span>
-                        <span class="typewriter-cursor"></span>
+                        <span class="typewriter-text">一个由初中生建立的团队，主要涉及方面为</span>
                     </span>
                     <br><br>
                     <a href="media.html" class="highlight">自媒体</a>
@@ -463,28 +453,23 @@
             mainPage.classList.add('fade-in');
             teamLogo.style.display = 'block';
             
-            // 重置打字动画
-            resetTypewriterAnimation();
+            // 启动打字动画
+            startTypewriterAnimation();
         }
         
-        // 重置打字动画
-        function resetTypewriterAnimation() {
-            const typewriter = document.querySelector('.typewriter');
-            const cursor = document.querySelector('.typewriter-cursor');
+        // 启动打字动画
+        function startTypewriterAnimation() {
+            const typewriterText = document.querySelector('.typewriter-text');
             
-            if (typewriter && cursor) {
+            if (typewriterText) {
                 // 重置动画
-                typewriter.style.animation = 'none';
-                cursor.style.animation = 'none';
+                typewriterText.style.animation = 'none';
                 
                 // 强制重绘
-                void typewriter.offsetWidth;
-                void cursor.offsetWidth;
+                void typewriterText.offsetWidth;
                 
                 // 重新应用动画
-                typewriter.style.animation = 'typing 3.5s steps(40, end) forwards';
-                typewriter.style.animationDelay = '0.5s';
-                cursor.style.animation = 'blink-cursor 0.75s step-end infinite';
+                typewriterText.style.animation = 'typing 3.5s steps(40, end) forwards, blink-cursor 0.75s step-end infinite';
             }
         }
         
