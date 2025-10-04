@@ -137,7 +137,31 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(251, 114, 153, 0.3);
         }
-        
+        /* MC服务器链接样式 */
+.minecraft-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #007AFF;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+
+.minecraft-link:hover {
+    background-color: #0056CC;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+}
+
+.minecraft-icon {
+    margin-right: 8px;
+    font-size: 18px;
+}
         .bilibili-link:hover {
             background-color: #ff8ab0;
             transform: translateY(-2px);
@@ -398,13 +422,17 @@
                     <a href="tech.html" class="highlight">信息技术</a>
                 </p>
                 
-                <!-- 哔哩哔哩链接 -->
-                <a href="https://space.bilibili.com/1364232155" target="_blank" class="bilibili-link">
-                    <i class="fab fa-bilibili bilibili-icon"></i>
-                    关注我们的哔哩哔哩
-                </a>
-            </div>
-        </div>
+                <!-- 在哔哩哔哩链接后面添加MC服务器按钮 -->
+<a href="https://space.bilibili.com/1364232155" target="_blank" class="bilibili-link">
+    <i class="fab fa-bilibili bilibili-icon"></i>
+    关注我们的哔哩哔哩
+</a>
+
+<!-- 新增MC服务器按钮 -->
+<a href="minecraft.html" class="minecraft-link">
+    <i class="fas fa-server minecraft-icon"></i>
+    加入我们的MC服务器
+</a>
         
         <!-- 内部人员链接 -->
         <div class="internal-section">

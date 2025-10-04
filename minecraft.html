@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加入我们的MC服务器 - 星梦工作室</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.5;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 团队LOGO样式 */
+        .team-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 页面内容样式 */
+        .page-content {
+            min-height: 100vh;
+            padding: 100px 0 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+            text-align: center;
+        }
+        
+        .server-info {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .server-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .server-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-logo-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .team-logo-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+        }
+        
+        .info-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #007AFF;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-title i {
+            margin-right: 10px;
+        }
+        
+        .address-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007AFF;
+        }
+        
+        .address-label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #1d1d1f;
+        }
+        
+        .address-value {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 5px;
+            color: #495057;
+            word-break: break-all;
+        }
+        
+        .requirement-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .requirement-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+        
+        .requirement-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .requirement-list i {
+            color: #28a745;
+            margin-right: 10px;
+        }
+        
+        .welcome-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #424245;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .highlight {
+            color: #007AFF;
+            font-weight: 600;
+        }
+        
+        .feature-section {
+            background: #f0f8ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .feature-text {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #424245;
+            text-align: center;
+        }
+        
+        .feature-text i {
+            color: #28a745;
+            margin-right: 8px;
+        }
+        
+        .thanks-section {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #007AFF;
+        }
+        
+        .thanks-text {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #424245;
+            text-align: center;
+        }
+        
+        .thanks-link {
+            color: #007AFF;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .thanks-link:hover {
+            color: #0056CC;
+            text-decoration: underline;
+        }
+        
+        .back-btn {
+            padding: 12px 30px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 40px auto 0;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+        }
+        
+        .back-btn:hover {
+            background-color: #0056CC;
+        }
+        
+        @media (max-width: 768px) {
+            .team-logo {
+                top: 15px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .server-info {
+                padding: 25px;
+            }
+            
+            .server-logo,
+            .team-logo-large {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-container {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 团队LOGO -->
+    <a href="index.html?page=main" class="team-logo">
+        <img src="team-logo.png" alt="星梦工作室LOGO">
+    </a>
+
+    <!-- 页面内容 -->
+    <section class="page-content">
+        <div class="container">
+            <h1 class="page-title">加入我们的MC服务器</h1>
+            
+            <div class="server-info">
+                <!-- 服务器LOGO和团队LOGO -->
+                <div class="logo-container">
+                    <div class="server-logo">
+                        <img src="logo.png" alt="MC服务器LOGO">
+                    </div>
+                    <div class="team-logo-large">
+                        <img src="team-logo.png" alt="星梦工作室LOGO">
+                    </div>
+                </div>
+                
+                <!-- 欢迎语 -->
+                <div class="welcome-text">
+                    <p>欢迎来到星梦工作室的Minecraft服务器！我们是一个充满创意和热情的社区，致力于打造一个友好、有趣的游戏环境。</p>
+                    <p>我们的服务器需要建筑大佬一起建造主城！如果你热爱建筑，喜欢创造，欢迎加入我们，共同打造一个令人惊叹的世界！</p>
+                    <p>无论你是建筑大师、红石专家还是生存爱好者，这里都有你的一席之地。让我们一起探索、创造和分享游戏的乐趣！</p>
+                </div>
+                
+                <!-- 服务器特色 -->
+                <div class="feature-section">
+                    <p class="feature-text">
+                        <i class="fas fa-check-circle"></i>
+                        <strong>好消息！</strong> 我们的服务器<strong>没有正版验证</strong>，这意味着无论你是否拥有正版Minecraft，都可以加入我们的服务器一起游玩！
+                    </p>
+                </div>
+                
+                <!-- 感谢信息 -->
+                <div class="thanks-section">
+                    <p class="thanks-text">
+                        特别感谢 <span class="highlight">Weheal大佬</span> 提供的服务器支持！
+                        <br>
+                        访问 Weheal 的网站：
+                        <a href="https://www.mslmc.net/" target="_blank" class="thanks-link">
+                            https://www.mslmc.net/
+                        </a>
+                    </p>
+                </div>
+                
+                <!-- 服务器地址 -->
+                <div class="info-section">
+                    <h3 class="info-title">
+                        <i class="fas fa-network-wired"></i>
+                        服务器连接地址
+                    </h3>
+                    <div class="address-item">
+                        <div class="address-label">主要地址（推荐）：</div>
+                        <div class="address-value">cn-hz1.qwq0v0.fun:11457</div>
+                    </div>
+                    <div class="address-item">
+                        <div class="address-label">备用地址（如主地址无法连接）：</div>
+                        <div class="address-value">47.96.237.48:11457</div>
+                    </div>
+                </div>
+                
+                <!-- 服务器要求 -->
+                <div class="info-section">
+                    <h3 class="info-title">
+                        <i class="fas fa-cogs"></i>
+                        服务器要求
+                    </h3>
+                    <ul class="requirement-list">
+                        <li><i class="fas fa-check"></i> Minecraft版本：1.21.5</li>
+                        <li><i class="fas fa-check"></i> 必须使用Fabric加载器</li>
+                        <li><i class="fas fa-check"></i> 必须安装FabricAPI</li>
+                        <li><i class="fas fa-check"></i> 建议分配2GB以上内存</li>
+                    </ul>
+                </div>
+                
+                <!-- 服务器特色 -->
+                <div class="info-section">
+                    <h3 class="info-title">
+                        <i class="fas fa-star"></i>
+                        服务器特色
+                    </h3>
+                    <ul class="requirement-list">
+                        <li><i class="fas fa-hammer"></i> 开放式建筑创作环境</li>
+                        <li><i class="fas fa-users"></i> 友好的玩家社区</li>
+                        <li><i class="fas fa-shield-alt"></i> 稳定的服务器性能</li>
+                        <li><i class="fas fa-heart"></i> 活跃的管理团队</li>
+                        <li><i class="fas fa-gamepad"></i> 无正版验证，所有玩家均可加入</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <a href="index.html?page=main" class="back-btn">返回主页</a>
+        </div>
+    </section>
+</body>
+</html>
