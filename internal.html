@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>内部人员 - 星梦工作室</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 引入SheetJS库用于生成Excel文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -69,7 +71,7 @@
         }
         
         .password-section {
-            max-width: 400px;
+            max-width: 800px;
             margin: 0 auto 40px;
             text-align: center;
             width: 100%;
@@ -83,6 +85,7 @@
             font-size: 16px;
             margin-bottom: 20px;
             transition: border-color 0.3s ease;
+            max-width: 400px;
         }
         
         .password-input:focus {
@@ -143,7 +146,127 @@
         .back-btn:hover {
             background-color: #0056CC;
         }
+
+        /* 人员表格样式 */
+        .personnel-table-section {
+            display: none;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .personnel-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .personnel-table th {
+            background-color: #f5f5f7;
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #1d1d1f;
+            border-bottom: 1px solid #e0e0e0;
+            white-space: nowrap;
+        }
+
+        .personnel-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            word-wrap: break-word;
+        }
+
+        .personnel-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .personnel-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* 设置列宽 */
+        .personnel-table th:nth-child(1),
+        .personnel-table td:nth-child(1) {
+            width: 10%;
+            min-width: 80px;
+        }
         
+        .personnel-table th:nth-child(2),
+        .personnel-table td:nth-child(2) {
+            width: 12%;
+            min-width: 100px;
+        }
+        
+        .personnel-table th:nth-child(3),
+        .personnel-table td:nth-child(3) {
+            width: 20%;
+            min-width: 150px;
+        }
+        
+        .personnel-table th:nth-child(4),
+        .personnel-table td:nth-child(4) {
+            width: 12%;
+            min-width: 100px;
+        }
+        
+        .personnel-table th:nth-child(5),
+        .personnel-table td:nth-child(5) {
+            width: 12%;
+            min-width: 100px;
+        }
+        
+        .personnel-table th:nth-child(6),
+        .personnel-table td:nth-child(6) {
+            width: 12%;
+            min-width: 100px;
+        }
+        
+        .personnel-table th:nth-child(7),
+        .personnel-table td:nth-child(7) {
+            width: 10%;
+            min-width: 80px;
+        }
+
+        .download-btn {
+            padding: 12px 30px;
+            background-color: #34C759;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background-color: #30A74E;
+        }
+
+        .download-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         @media (max-width: 768px) {
             .team-logo {
                 top: 15px;
@@ -154,6 +277,16 @@
             
             .page-title {
                 font-size: 28px;
+            }
+
+            .password-section {
+                max-width: 100%;
+            }
+
+            .personnel-table th,
+            .personnel-table td {
+                padding: 10px 8px;
+                font-size: 14px;
             }
         }
     </style>
@@ -181,6 +314,37 @@
                     <p class="info-item">大号电话：15708111351（长假能用，看情况）</p>
                     <p class="info-item">小号电话：13547790668（一般假能用，看情况）</p>
                 </div>
+
+                <!-- 人员表格部分 -->
+                <div class="personnel-table-section" id="personnel-table-section">
+                    <h3 class="info-title">星梦工作室人员名单</h3>
+                    <div class="table-container">
+                        <table class="personnel-table">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>网名</th>
+                                    <th>电话</th>
+                                    <th>QQ号</th>
+                                    <th>部门</th>
+                                    <th>部门2</th>
+                                    <th>学校</th>
+                                </tr>
+                            </thead>
+                            <tbody id="personnel-table-body">
+                                <!-- 表格内容将通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-actions">
+                        <button class="download-btn" id="download-table">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                            </svg>
+                            下载人员名单 (Excel格式)
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- 修改返回主页链接，直接返回主页面 -->
@@ -189,12 +353,48 @@
     </section>
 
     <script>
+        // 人员数据
+        const personnelData = [
+            { name: '熊宇琦', nickname: 'Xyq', phone: '大号15708111351小号13547790668', qq: '1434093270', department: '录制部', department2: '', school: 'fj' },
+            { name: '杜昀锦', nickname: '一只小杜鹃', phone: '15775361715', qq: '3127355211', department: '录制部', department2: '美术部', school: 'cd' },
+            { name: '李锦豪', nickname: '一只小哈', phone: '19950932573', qq: '3695886004', department: '录制部', department2: '美术部', school: 'yc' },
+            { name: '刘语涵', nickname: '', phone: '19827677300', qq: '', department: '美术部', department2: '', school: 'yc' },
+            { name: '陈锦轩', nickname: '', phone: '15520692596', qq: '', department: '', department2: '', school: '' },
+            { name: '许邹敏', nickname: '一只小许许', phone: '15708115354', qq: '', department: '', department2: '', school: 'yc' },
+            { name: '瞿', nickname: '丘山', phone: '17790322997', qq: '2970466241', department: '录制部', department2: '', school: 'fj' },
+            { name: '陈仕昊', nickname: '方尘', phone: '18142776465', qq: '1003607157', department: '建筑部', department2: '', school: 'fj' },
+            { name: '周杨宸', nickname: '', phone: '17852518011', qq: '', department: '吉祥物', department2: '', school: 'fj' },
+            { name: '罗梓轩', nickname: 'leaf_xm', phone: '', qq: '', department: '指令部', department2: '', school: 'fj' },
+            { name: '陈卓衡', nickname: '', phone: '', qq: '', department: '建筑部', department2: '', school: 'fj' },
+            { name: '王艺锦', nickname: '', phone: '', qq: '3888599242', department: '后勤', department2: '', school: 'fj' }
+        ];
+
         document.getElementById('submit-password').addEventListener('click', function() {
             const passwordInput = document.getElementById('password-input');
             const internalInfo = document.getElementById('internal-info');
+            const personnelTableSection = document.getElementById('personnel-table-section');
             
             if (passwordInput.value === '114514667') {
                 internalInfo.style.display = 'block';
+                personnelTableSection.style.display = 'block';
+                
+                // 填充人员表格
+                const tableBody = document.getElementById('personnel-table-body');
+                tableBody.innerHTML = '';
+                
+                personnelData.forEach(person => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${person.name}</td>
+                        <td>${person.nickname}</td>
+                        <td>${person.phone}</td>
+                        <td>${person.qq}</td>
+                        <td>${person.department}</td>
+                        <td>${person.department2}</td>
+                        <td>${person.school}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
             } else {
                 alert('密码错误，请重新输入！');
                 passwordInput.value = '';
@@ -205,6 +405,51 @@
             if (e.key === 'Enter') {
                 document.getElementById('submit-password').click();
             }
+        });
+
+        // 下载表格功能 - 生成Excel格式
+        document.getElementById('download-table').addEventListener('click', function() {
+            // 创建工作簿
+            const wb = XLSX.utils.book_new();
+            
+            // 创建工作表数据
+            const wsData = [
+                ['姓名', '网名', '电话', 'QQ号', '部门', '部门2', '学校']
+            ];
+            
+            // 添加人员数据
+            personnelData.forEach(person => {
+                wsData.push([
+                    person.name,
+                    person.nickname,
+                    person.phone,
+                    person.qq,
+                    person.department,
+                    person.department2,
+                    person.school
+                ]);
+            });
+            
+            // 创建工作表
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            
+            // 设置列宽
+            const colWidths = [
+                { wch: 10 }, // 姓名
+                { wch: 12 }, // 网名
+                { wch: 20 }, // 电话
+                { wch: 12 }, // QQ号
+                { wch: 12 }, // 部门
+                { wch: 12 }, // 部门2
+                { wch: 10 }  // 学校
+            ];
+            ws['!cols'] = colWidths;
+            
+            // 将工作表添加到工作簿
+            XLSX.utils.book_append_sheet(wb, ws, '星梦工作室人员名单');
+            
+            // 生成Excel文件并下载
+            XLSX.writeFile(wb, '星梦工作室人员名单.xlsx');
         });
     </script>
 </body>
