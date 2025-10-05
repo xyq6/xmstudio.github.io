@@ -310,9 +310,10 @@
                 <div class="internal-info" id="internal-info">
                     <h3 class="info-title">内部联系信息</h3>
                     <p class="info-item">团队QQ群号：985915319</p>
-                    <p class="info-item">个人QQ号：1434093270</p>
-                    <p class="info-item">大号电话：15708111351（长假能用，看情况）</p>
-                    <p class="info-item">小号电话：13547790668（一般假能用，看情况）</p>
+                    <p class="info-item">团队QQ频道号：pd68969915</p>
+                    <p class="info-item">xyq个人QQ号：1434093270</p>
+                    <p class="info-item">xyq大号电话：15708111351（长假能用，看情况）</p>
+                    <p class="info-item">xyq小号电话：13547790668（一般假能用，看情况）</p>
                 </div>
 
                 <!-- 人员表格部分 -->
@@ -409,47 +410,79 @@
 
         // 下载表格功能 - 生成Excel格式
         document.getElementById('download-table').addEventListener('click', function() {
-            // 创建工作簿
-            const wb = XLSX.utils.book_new();
-            
-            // 创建工作表数据
-            const wsData = [
-                ['姓名', '网名', '电话', 'QQ号', '部门', '部门2', '学校']
-            ];
-            
-            // 添加人员数据
-            personnelData.forEach(person => {
-                wsData.push([
-                    person.name,
-                    person.nickname,
-                    person.phone,
-                    person.qq,
-                    person.department,
-                    person.department2,
-                    person.school
-                ]);
-            });
-            
-            // 创建工作表
-            const ws = XLSX.utils.aoa_to_sheet(wsData);
-            
-            // 设置列宽
-            const colWidths = [
-                { wch: 10 }, // 姓名
-                { wch: 12 }, // 网名
-                { wch: 20 }, // 电话
-                { wch: 12 }, // QQ号
-                { wch: 12 }, // 部门
-                { wch: 12 }, // 部门2
-                { wch: 10 }  // 学校
-            ];
-            ws['!cols'] = colWidths;
-            
-            // 将工作表添加到工作簿
-            XLSX.utils.book_append_sheet(wb, ws, '星梦工作室人员名单');
-            
-            // 生成Excel文件并下载
-            XLSX.writeFile(wb, '星梦工作室人员名单.xlsx');
+            try {
+                // 检查XLSX库是否已加载
+                if (typeof XLSX === 'undefined') {
+                    alert('Excel库未加载，请刷新页面重试');
+                    return;
+                }
+                
+                // 创建工作簿
+                const wb = XLSX.utils.book_new();
+                
+                // 创建工作表数据
+                const wsData = [
+                    ['姓名', '网名', '电话', 'QQ号', '部门', '部门2', '学校']
+                ];
+                
+                // 添加人员数据
+                personnelData.forEach(person => {
+                    wsData.push([
+                        person.name,
+                        person.nickname,
+                        person.phone,
+                        person.qq,
+                        person.department,
+                        person.department2,
+                        person.school
+                    ]);
+                });
+                
+                // 创建工作表
+                const ws = XLSX.utils.aoa_to_sheet(wsData);
+                
+                // 设置列宽
+                const colWidths = [
+                    { wch: 10 }, // 姓名
+                    { wch: 12 }, // 网名
+                    { wch: 20 }, // 电话
+                    { wch: 12 }, // QQ号
+                    { wch: 12 }, // 部门
+                    { wch: 12 }, // 部门2
+                    { wch: 10 }  // 学校
+                ];
+                ws['!cols'] = colWidths;
+                
+                // 将工作表添加到工作簿
+                XLSX.utils.book_append_sheet(wb, ws, '星梦工作室人员名单');
+                
+                // 生成Excel文件并下载
+                XLSX.writeFile(wb, '星梦工作室人员名单.xlsx');
+                
+                // 添加下载成功提示
+                setTimeout(() => {
+                    alert('人员名单已成功下载为Excel文件！');
+                }, 500);
+                
+            } catch (error) {
+                console.error('下载Excel文件时出错:', error);
+                alert('下载失败，请重试或联系管理员。错误信息: ' + error.message);
+                
+                // 备用方案：如果Excel下载失败，提供CSV下载
+                const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + 
+                    "姓名,网名,电话,QQ号,部门,部门2,学校\n" +
+                    personnelData.map(person => 
+                        `"${person.name}","${person.nickname}","${person.phone}","${person.qq}","${person.department}","${person.department2}","${person.school}"`
+                    ).join("\n");
+                
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "星梦工作室人员名单.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         });
     </script>
 </body>
