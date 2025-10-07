@@ -7,7 +7,58 @@
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 保持与之前相同的样式，但添加 GitHub 配置区域 */
+        /* 密码保护层样式 */
+        #password-protection {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f5f5f7;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .password-section {
+            max-width: 400px;
+            margin: 0 auto 40px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d2d2d7;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .password-input:focus {
+            border-color: #007AFF;
+            outline: none;
+        }
+        
+        .submit-btn {
+            padding: 12px 30px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0056CC;
+        }
+        
         .github-config {
             background-color: white;
             border-radius: 12px;
@@ -106,6 +157,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            display: none; /* 默认隐藏，通过认证后显示 */
         }
         
         .page-title {
@@ -327,6 +379,26 @@
             background-color: #0056CC;
         }
         
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         @media (max-width: 768px) {
             .team-logo {
                 top: 15px;
@@ -361,6 +433,21 @@
     </style>
 </head>
 <body>
+    <!-- 密码保护层 -->
+    <div id="password-protection">
+        <div class="container">
+            <h1 class="page-title">文件下载中心</h1>
+            <div class="password-section">
+                <p style="margin-bottom: 20px; color: #424245;">请输入访问密码：</p>
+                <input type="password" class="password-input" id="password-input" placeholder="请输入密码">
+                <button class="submit-btn" id="submit-password">确认</button>
+                <p style="margin-top: 20px; color: #86868b;">
+                    <a href="internal.html" style="color: #007AFF;">返回内部页面</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
     <!-- 团队LOGO -->
     <a href="index.html?page=main" class="team-logo">
         <img src="team-logo.png" alt="星梦工作室LOGO">
@@ -375,10 +462,11 @@
             <div class="github-config" id="github-config">
                 <h2 class="section-title">GitHub 配置</h2>
                 <p style="margin-bottom: 15px; color: #424245;">为了使用文件上传功能，请配置 GitHub 信息：</p>
-                <input type="text" class="config-input" id="repo-owner" placeholder="GitHub 用户名">
-                <input type="text" class="config-input" id="repo-name" placeholder="仓库名称">
+                <input type="text" class="config-input" id="repo-owner" placeholder="GitHub 用户名" value="xyq6">
+                <input type="text" class="config-input" id="repo-name" placeholder="仓库名称" value="xmstudioduwnload.github.io">
                 <input type="password" class="config-input" id="github-token" placeholder="GitHub 个人访问令牌">
                 <button class="config-btn" id="save-config">保存配置</button>
+                <div id="config-status"></div>
                 <p class="config-info">
                     * 个人访问令牌需要 repo 权限。您可以在 GitHub Settings → Developer settings → Personal access tokens 中创建
                 </p>
@@ -394,11 +482,15 @@
                 </div>
                 <input type="file" class="file-input" id="file-input" multiple>
                 <button class="upload-btn" id="upload-btn" disabled>上传到 GitHub</button>
+                <div id="upload-status"></div>
             </div>
             
             <!-- 文件列表区域 -->
             <div class="files-section">
                 <h2 class="section-title">文件列表</h2>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <button class="config-btn" id="refresh-files">刷新文件列表</button>
+                </div>
                 <ul class="file-list" id="file-list">
                     <li class="empty-state">
                         <i class="fas fa-folder-open empty-icon"></i>
@@ -413,8 +505,49 @@
     </section>
 
     <script>
-        // GitHub 文件管理功能
+        // 检查是否已经通过认证
         document.addEventListener('DOMContentLoaded', function() {
+            const passwordProtection = document.getElementById('password-protection');
+            const pageContent = document.querySelector('.page-content');
+            const passwordInput = document.getElementById('password-input');
+            const submitPassword = document.getElementById('submit-password');
+            
+            // 检查sessionStorage中是否有认证标志
+            if (sessionStorage.getItem('internal_authenticated') === 'true') {
+                // 已经认证，显示页面内容
+                passwordProtection.style.display = 'none';
+                pageContent.style.display = 'flex';
+                initializeFileManager();
+            } else {
+                // 未认证，显示密码保护层
+                passwordProtection.style.display = 'flex';
+                pageContent.style.display = 'none';
+            }
+            
+            // 密码验证
+            submitPassword.addEventListener('click', function() {
+                if (passwordInput.value === '114514667') {
+                    // 密码正确，设置认证状态并显示页面
+                    sessionStorage.setItem('internal_authenticated', 'true');
+                    passwordProtection.style.display = 'none';
+                    pageContent.style.display = 'flex';
+                    initializeFileManager();
+                } else {
+                    alert('密码错误，请重新输入！');
+                    passwordInput.value = '';
+                }
+            });
+            
+            // 回车键提交密码
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    submitPassword.click();
+                }
+            });
+        });
+        
+        // 文件管理功能
+        function initializeFileManager() {
             const fileInput = document.getElementById('file-input');
             const uploadArea = document.getElementById('upload-area');
             const uploadBtn = document.getElementById('upload-btn');
@@ -422,9 +555,11 @@
             const uploadSection = document.getElementById('upload-section');
             const githubConfig = document.getElementById('github-config');
             const saveConfigBtn = document.getElementById('save-config');
+            const refreshFilesBtn = document.getElementById('refresh-files');
+            const configStatus = document.getElementById('config-status');
+            const uploadStatus = document.getElementById('upload-status');
             
             let githubConfigData = JSON.parse(localStorage.getItem('github_config')) || {};
-            let files = [];
             
             // 初始化
             init();
@@ -436,7 +571,7 @@
                 const githubToken = document.getElementById('github-token').value;
                 
                 if (!repoOwner || !repoName || !githubToken) {
-                    alert('请填写所有配置信息');
+                    showStatus(configStatus, '请填写所有配置信息', 'error');
                     return;
                 }
                 
@@ -446,13 +581,27 @@
                     githubToken
                 };
                 
-                localStorage.setItem('github_config', JSON.stringify(githubConfigData));
-                
-                // 隐藏配置区域，显示上传区域
-                githubConfig.style.display = 'none';
-                uploadSection.style.display = 'block';
-                
-                // 加载文件列表
+                // 测试配置是否有效
+                testGitHubConfig(githubConfigData).then(isValid => {
+                    if (isValid) {
+                        localStorage.setItem('github_config', JSON.stringify(githubConfigData));
+                        
+                        // 隐藏配置区域，显示上传区域
+                        githubConfig.style.display = 'none';
+                        uploadSection.style.display = 'block';
+                        
+                        showStatus(configStatus, '配置保存成功！', 'success');
+                        
+                        // 加载文件列表
+                        loadFilesFromGitHub();
+                    } else {
+                        showStatus(configStatus, '配置测试失败，请检查用户名、仓库名和令牌', 'error');
+                    }
+                });
+            });
+            
+            // 刷新文件列表
+            refreshFilesBtn.addEventListener('click', function() {
                 loadFilesFromGitHub();
             });
             
@@ -494,12 +643,40 @@
                     githubConfig.style.display = 'none';
                     uploadSection.style.display = 'block';
                     
-                    // 加载现有文件
-                    loadFilesFromGitHub();
+                    // 测试配置并加载现有文件
+                    testGitHubConfig(githubConfigData).then(isValid => {
+                        if (isValid) {
+                            loadFilesFromGitHub();
+                        } else {
+                            // 配置无效，显示配置区域
+                            githubConfig.style.display = 'block';
+                            uploadSection.style.display = 'none';
+                            showStatus(configStatus, '保存的配置无效，请重新配置', 'error');
+                        }
+                    });
                 } else {
                     // 未配置，显示配置区域
                     githubConfig.style.display = 'block';
                     uploadSection.style.display = 'none';
+                }
+            }
+            
+            // 测试 GitHub 配置是否有效
+            async function testGitHubConfig(config) {
+                try {
+                    const apiUrl = `https://api.github.com/repos/${config.repoOwner}/${config.repoName}`;
+                    
+                    const response = await fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `token ${config.githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+                    
+                    return response.ok;
+                } catch (error) {
+                    console.error('测试配置失败:', error);
+                    return false;
                 }
             }
             
@@ -518,21 +695,39 @@
             async function uploadFilesToGitHub(filesToUpload) {
                 uploadBtn.disabled = true;
                 uploadBtn.textContent = '上传中...';
+                showStatus(uploadStatus, '开始上传文件...', 'success');
                 
                 try {
+                    let successCount = 0;
+                    let errorCount = 0;
+                    
                     for (let i = 0; i < filesToUpload.length; i++) {
                         const file = filesToUpload[i];
-                        await uploadSingleFile(file);
+                        showStatus(uploadStatus, `正在上传: ${file.name}`, 'success');
+                        
+                        try {
+                            await uploadSingleFile(file);
+                            successCount++;
+                        } catch (error) {
+                            console.error(`上传文件 ${file.name} 失败:`, error);
+                            errorCount++;
+                            showStatus(uploadStatus, `上传失败: ${file.name} - ${error.message}`, 'error');
+                        }
                     }
                     
-                    alert(`成功上传 ${filesToUpload.length} 个文件到 GitHub`);
+                    if (successCount > 0) {
+                        showStatus(uploadStatus, `成功上传 ${successCount} 个文件到 GitHub`, 'success');
+                    }
+                    if (errorCount > 0) {
+                        showStatus(uploadStatus, `${errorCount} 个文件上传失败`, 'error');
+                    }
                     
                     // 重新加载文件列表
                     loadFilesFromGitHub();
                     
                 } catch (error) {
                     console.error('上传文件失败:', error);
-                    alert('上传文件失败: ' + error.message);
+                    showStatus(uploadStatus, '上传文件失败: ' + error.message, 'error');
                 } finally {
                     uploadBtn.disabled = true;
                     uploadBtn.textContent = '上传到 GitHub';
@@ -547,14 +742,15 @@
                 // 读取文件内容
                 const fileContent = await readFileAsBase64(file);
                 
-                // 构建 API 请求
-                const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/files/${file.name}`;
+                // 构建 API 请求 - 直接上传到仓库根目录
+                const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${file.name}`;
                 
                 const response = await fetch(apiUrl, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `token ${githubToken}`,
                         'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
                     },
                     body: JSON.stringify({
                         message: `Add file: ${file.name}`,
@@ -564,7 +760,7 @@
                 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(errorData.message || '上传失败');
+                    throw new Error(errorData.message || `上传失败，状态码: ${response.status}`);
                 }
                 
                 return await response.json();
@@ -573,31 +769,37 @@
             // 从 GitHub 加载文件列表
             async function loadFilesFromGitHub() {
                 try {
-                    const { repoOwner, repoName } = githubConfigData;
+                    const { repoOwner, repoName, githubToken } = githubConfigData;
                     
-                    // 使用 GitHub API 获取文件列表
-                    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/files`;
+                    // 使用 GitHub API 获取仓库内容
+                    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents`;
                     
-                    const response = await fetch(apiUrl);
+                    const response = await fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `token ${githubToken}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
                     
                     if (!response.ok) {
                         if (response.status === 404) {
-                            // files 文件夹不存在，显示空状态
+                            // 仓库为空或不存在
                             renderFileList([]);
                             return;
                         }
-                        throw new Error('获取文件列表失败');
+                        throw new Error(`获取文件列表失败，状态码: ${response.status}`);
                     }
                     
                     const data = await response.json();
                     
                     // 过滤出文件（排除文件夹）
-                    files = data.filter(item => item.type === 'file');
+                    const files = Array.isArray(data) ? data.filter(item => item.type === 'file') : [];
                     
                     renderFileList(files);
                     
                 } catch (error) {
                     console.error('加载文件列表失败:', error);
+                    showStatus(configStatus, '加载文件列表失败: ' + error.message, 'error');
                     renderFileList([]);
                 }
             }
@@ -608,7 +810,7 @@
                     fileList.innerHTML = `
                         <li class="empty-state">
                             <i class="fas fa-folder-open empty-icon"></i>
-                            <p>暂无文件</p>
+                            <p>仓库中暂无文件</p>
                         </li>
                     `;
                     return;
@@ -641,7 +843,7 @@
                                 <i class="fas fa-download"></i>
                                 下载
                             </button>
-                            <button class="delete-btn" data-path="${file.path}" data-name="${file.name}">
+                            <button class="delete-btn" data-path="${file.path}" data-name="${file.name}" data-sha="${file.sha}">
                                 <i class="fas fa-trash"></i>
                                 删除
                             </button>
@@ -663,7 +865,8 @@
                     btn.addEventListener('click', function() {
                         const filePath = this.getAttribute('data-path');
                         const fileName = this.getAttribute('data-name');
-                        deleteFileFromGitHub(filePath, fileName);
+                        const fileSha = this.getAttribute('data-sha');
+                        deleteFileFromGitHub(filePath, fileName, fileSha);
                     });
                 });
             }
@@ -674,7 +877,7 @@
             }
             
             // 从 GitHub 删除文件
-            async function deleteFileFromGitHub(filePath, fileName) {
+            async function deleteFileFromGitHub(filePath, fileName, fileSha) {
                 if (!confirm(`确定要删除文件 "${fileName}" 吗？`)) {
                     return;
                 }
@@ -682,26 +885,18 @@
                 try {
                     const { repoOwner, repoName, githubToken } = githubConfigData;
                     
-                    // 首先获取文件的 SHA
                     const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
                     
-                    const fileResponse = await fetch(apiUrl);
-                    if (!fileResponse.ok) {
-                        throw new Error('获取文件信息失败');
-                    }
-                    
-                    const fileData = await fileResponse.json();
-                    
-                    // 删除文件
                     const deleteResponse = await fetch(apiUrl, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': `token ${githubToken}`,
                             'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github.v3+json'
                         },
                         body: JSON.stringify({
                             message: `Delete file: ${fileName}`,
-                            sha: fileData.sha
+                            sha: fileSha
                         })
                     });
                     
@@ -717,6 +912,17 @@
                 } catch (error) {
                     console.error('删除文件失败:', error);
                     alert('删除文件失败: ' + error.message);
+                }
+            }
+            
+            // 显示状态消息
+            function showStatus(element, message, type) {
+                element.innerHTML = `<div class="status-message status-${type}">${message}</div>`;
+                // 3秒后自动清除成功消息
+                if (type === 'success') {
+                    setTimeout(() => {
+                        element.innerHTML = '';
+                    }, 3000);
                 }
             }
             
@@ -771,7 +977,7 @@
                 
                 return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             }
-        });
+        }
     </script>
 </body>
 </html>
