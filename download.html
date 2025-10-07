@@ -839,7 +839,7 @@
                             </div>
                         </div>
                         <div class="file-actions">
-                            <button class="download-btn" data-url="${file.download_url}">
+                            <button class="download-btn" data-url="${file.download_url}" data-name="${file.name}">
                                 <i class="fas fa-download"></i>
                                 下载
                             </button>
@@ -857,7 +857,8 @@
                 document.querySelectorAll('.download-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const fileUrl = this.getAttribute('data-url');
-                        downloadFile(fileUrl);
+                        const fileName = this.getAttribute('data-name');
+                        downloadFile(fileUrl, fileName);
                     });
                 });
                 
@@ -871,9 +872,43 @@
                 });
             }
             
-            // 下载文件
-            function downloadFile(fileUrl) {
-                window.open(fileUrl, '_blank');
+            // 下载文件 - 完全修复版本
+            async function downloadFile(fileUrl, fileName) {
+                try {
+                    // 使用 fetch API 获取文件内容
+                    const response = await fetch(fileUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`下载失败: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    // 将响应转换为 Blob
+                    const blob = await response.blob();
+                    
+                    // 创建 Blob URL
+                    const blobUrl = window.URL.createObjectURL(blob);
+                    
+                    // 创建隐藏的下载链接
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = fileName;
+                    link.style.display = 'none';
+                    
+                    // 添加到 DOM 并触发点击
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // 清理
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(blobUrl);
+                    
+                } catch (error) {
+                    console.error('下载文件失败:', error);
+                    
+                    // 备用方案：直接打开链接（可能会显示源代码）
+                    alert('下载失败，正在尝试备用方案...');
+                    window.open(fileUrl, '_blank');
+                }
             }
             
             // 从 GitHub 删除文件
