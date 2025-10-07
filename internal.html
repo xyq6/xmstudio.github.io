@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>内部人员 - 星梦工作室</title>
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- 引入SheetJS库用于生成Excel文件 -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
@@ -147,6 +148,33 @@
             background-color: #0056CC;
         }
 
+        /* 文件下载按钮样式 - 小尺寸 */
+        .file-download-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #FF9500;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+            font-size: 14px;
+        }
+
+        .file-download-btn:hover {
+            background-color: #E58500;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 149, 0, 0.4);
+        }
+
+        .file-download-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
         /* 人员表格样式 */
         .personnel-table-section {
             display: none;
@@ -237,27 +265,32 @@
             min-width: 80px;
         }
 
+        /* 下载按钮样式 - 小尺寸 */
         .download-btn {
-            padding: 12px 30px;
+            padding: 10px 20px;
             background-color: #34C759;
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 14px;
             cursor: pointer;
             transition: background-color 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
         }
 
         .download-btn:hover {
             background-color: #30A74E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
         }
 
         .download-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
         }
 
@@ -307,7 +340,14 @@
                 <input type="password" class="password-input" id="password-input" placeholder="请输入密码">
                 <button class="submit-btn" id="submit-password">确认</button>
                 
+                <!-- 内部联系信息 -->
                 <div class="internal-info" id="internal-info">
+                    <!-- 文件下载按钮放在顶部 -->
+                    <a href="download.html" class="file-download-btn">
+                        <i class="fas fa-download file-download-icon"></i>
+                        文件下载页面
+                    </a>
+                    
                     <h3 class="info-title">内部联系信息</h3>
                     <p class="info-item">团队QQ群号：985915319</p>
                     <p class="info-item">团队QQ频道号：pd68969915</p>
@@ -396,6 +436,9 @@
                     `;
                     tableBody.appendChild(row);
                 });
+                
+                // 设置认证状态，用于download.html页面验证
+                sessionStorage.setItem('internal_authenticated', 'true');
             } else {
                 alert('密码错误，请重新输入！');
                 passwordInput.value = '';

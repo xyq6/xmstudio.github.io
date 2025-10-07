@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件下载中心 - 星梦工作室</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 保持与之前相同的样式，但添加 GitHub 配置区域 */
+        .github-config {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .config-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .config-input:focus {
+            border-color: #007AFF;
+            outline: none;
+        }
+        
+        .config-btn {
+            padding: 10px 20px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .config-btn:hover {
+            background-color: #0056CC;
+        }
+        
+        .config-info {
+            font-size: 12px;
+            color: #86868b;
+            margin-top: 10px;
+        }
+        
+        /* 其他样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.5;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .team-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .team-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .team-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-content {
+            min-height: 100vh;
+            padding: 100px 0 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .page-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin: 40px 0 20px;
+            color: #1d1d1f;
+            text-align: center;
+        }
+        
+        .upload-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #d2d2d7;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover {
+            border-color: #007AFF;
+            background-color: #f8f8fa;
+        }
+        
+        .upload-area.dragover {
+            border-color: #007AFF;
+            background-color: #e8f4ff;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #007AFF;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+        
+        .upload-hint {
+            font-size: 14px;
+            color: #86868b;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            padding: 12px 30px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .upload-btn:hover {
+            background-color: #0056CC;
+        }
+        
+        .upload-btn:disabled {
+            background-color: #d2d2d7;
+            cursor: not-allowed;
+        }
+        
+        .files-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .file-list {
+            list-style: none;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        
+        .file-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .file-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: #007AFF;
+            width: 30px;
+            text-align: center;
+        }
+        
+        .file-details {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #1d1d1f;
+        }
+        
+        .file-meta {
+            font-size: 14px;
+            color: #86868b;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .download-btn {
+            padding: 8px 16px;
+            background-color: #34C759;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .download-btn:hover {
+            background-color: #30A74E;
+        }
+        
+        .delete-btn {
+            padding: 8px 16px;
+            background-color: #FF3B30;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .delete-btn:hover {
+            background-color: #D70015;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #86868b;
+        }
+        
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #d2d2d7;
+        }
+        
+        .back-btn {
+            padding: 12px 30px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 40px auto 0;
+            text-decoration: none;
+            text-align: center;
+            width: fit-content;
+        }
+        
+        .back-btn:hover {
+            background-color: #0056CC;
+        }
+        
+        @media (max-width: 768px) {
+            .team-logo {
+                top: 15px;
+                left: 15px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+            
+            .upload-section, .files-section {
+                padding: 20px;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .file-actions {
+                margin-top: 10px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 团队LOGO -->
+    <a href="index.html?page=main" class="team-logo">
+        <img src="team-logo.png" alt="星梦工作室LOGO">
+    </a>
+
+    <!-- 页面内容 -->
+    <section class="page-content">
+        <div class="container">
+            <h1 class="page-title">文件下载中心</h1>
+            
+            <!-- GitHub 配置区域 -->
+            <div class="github-config" id="github-config">
+                <h2 class="section-title">GitHub 配置</h2>
+                <p style="margin-bottom: 15px; color: #424245;">为了使用文件上传功能，请配置 GitHub 信息：</p>
+                <input type="text" class="config-input" id="repo-owner" placeholder="GitHub 用户名">
+                <input type="text" class="config-input" id="repo-name" placeholder="仓库名称">
+                <input type="password" class="config-input" id="github-token" placeholder="GitHub 个人访问令牌">
+                <button class="config-btn" id="save-config">保存配置</button>
+                <p class="config-info">
+                    * 个人访问令牌需要 repo 权限。您可以在 GitHub Settings → Developer settings → Personal access tokens 中创建
+                </p>
+            </div>
+            
+            <!-- 文件上传区域 -->
+            <div class="upload-section" id="upload-section" style="display: none;">
+                <h2 class="section-title">上传文件到 GitHub</h2>
+                <div class="upload-area" id="upload-area">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p class="upload-text">点击选择文件或拖拽文件到此处</p>
+                    <p class="upload-hint">支持任何格式的文件</p>
+                </div>
+                <input type="file" class="file-input" id="file-input" multiple>
+                <button class="upload-btn" id="upload-btn" disabled>上传到 GitHub</button>
+            </div>
+            
+            <!-- 文件列表区域 -->
+            <div class="files-section">
+                <h2 class="section-title">文件列表</h2>
+                <ul class="file-list" id="file-list">
+                    <li class="empty-state">
+                        <i class="fas fa-folder-open empty-icon"></i>
+                        <p>暂无文件，请先配置 GitHub 信息</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- 返回按钮 -->
+            <a href="internal.html" class="back-btn">返回内部页面</a>
+        </div>
+    </section>
+
+    <script>
+        // GitHub 文件管理功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('file-input');
+            const uploadArea = document.getElementById('upload-area');
+            const uploadBtn = document.getElementById('upload-btn');
+            const fileList = document.getElementById('file-list');
+            const uploadSection = document.getElementById('upload-section');
+            const githubConfig = document.getElementById('github-config');
+            const saveConfigBtn = document.getElementById('save-config');
+            
+            let githubConfigData = JSON.parse(localStorage.getItem('github_config')) || {};
+            let files = [];
+            
+            // 初始化
+            init();
+            
+            // 保存 GitHub 配置
+            saveConfigBtn.addEventListener('click', function() {
+                const repoOwner = document.getElementById('repo-owner').value;
+                const repoName = document.getElementById('repo-name').value;
+                const githubToken = document.getElementById('github-token').value;
+                
+                if (!repoOwner || !repoName || !githubToken) {
+                    alert('请填写所有配置信息');
+                    return;
+                }
+                
+                githubConfigData = {
+                    repoOwner,
+                    repoName,
+                    githubToken
+                };
+                
+                localStorage.setItem('github_config', JSON.stringify(githubConfigData));
+                
+                // 隐藏配置区域，显示上传区域
+                githubConfig.style.display = 'none';
+                uploadSection.style.display = 'block';
+                
+                // 加载文件列表
+                loadFilesFromGitHub();
+            });
+            
+            // 点击上传区域触发文件选择
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // 拖拽功能
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleFiles(e.dataTransfer.files);
+                }
+            });
+            
+            // 文件选择变化
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length > 0) {
+                    handleFiles(fileInput.files);
+                }
+            });
+            
+            // 初始化函数
+            function init() {
+                if (githubConfigData.repoOwner && githubConfigData.repoName && githubConfigData.githubToken) {
+                    // 已配置，隐藏配置区域
+                    githubConfig.style.display = 'none';
+                    uploadSection.style.display = 'block';
+                    
+                    // 加载现有文件
+                    loadFilesFromGitHub();
+                } else {
+                    // 未配置，显示配置区域
+                    githubConfig.style.display = 'block';
+                    uploadSection.style.display = 'none';
+                }
+            }
+            
+            // 处理选择的文件
+            function handleFiles(selectedFiles) {
+                // 启用上传按钮
+                uploadBtn.disabled = false;
+                
+                // 设置上传按钮点击事件
+                uploadBtn.onclick = function() {
+                    uploadFilesToGitHub(selectedFiles);
+                };
+            }
+            
+            // 上传文件到 GitHub
+            async function uploadFilesToGitHub(filesToUpload) {
+                uploadBtn.disabled = true;
+                uploadBtn.textContent = '上传中...';
+                
+                try {
+                    for (let i = 0; i < filesToUpload.length; i++) {
+                        const file = filesToUpload[i];
+                        await uploadSingleFile(file);
+                    }
+                    
+                    alert(`成功上传 ${filesToUpload.length} 个文件到 GitHub`);
+                    
+                    // 重新加载文件列表
+                    loadFilesFromGitHub();
+                    
+                } catch (error) {
+                    console.error('上传文件失败:', error);
+                    alert('上传文件失败: ' + error.message);
+                } finally {
+                    uploadBtn.disabled = true;
+                    uploadBtn.textContent = '上传到 GitHub';
+                    fileInput.value = '';
+                }
+            }
+            
+            // 上传单个文件到 GitHub
+            async function uploadSingleFile(file) {
+                const { repoOwner, repoName, githubToken } = githubConfigData;
+                
+                // 读取文件内容
+                const fileContent = await readFileAsBase64(file);
+                
+                // 构建 API 请求
+                const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/files/${file.name}`;
+                
+                const response = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: `Add file: ${file.name}`,
+                        content: fileContent.split(',')[1], // 移除 data:application/octet-stream;base64, 前缀
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || '上传失败');
+                }
+                
+                return await response.json();
+            }
+            
+            // 从 GitHub 加载文件列表
+            async function loadFilesFromGitHub() {
+                try {
+                    const { repoOwner, repoName } = githubConfigData;
+                    
+                    // 使用 GitHub API 获取文件列表
+                    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/files`;
+                    
+                    const response = await fetch(apiUrl);
+                    
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            // files 文件夹不存在，显示空状态
+                            renderFileList([]);
+                            return;
+                        }
+                        throw new Error('获取文件列表失败');
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // 过滤出文件（排除文件夹）
+                    files = data.filter(item => item.type === 'file');
+                    
+                    renderFileList(files);
+                    
+                } catch (error) {
+                    console.error('加载文件列表失败:', error);
+                    renderFileList([]);
+                }
+            }
+            
+            // 渲染文件列表
+            function renderFileList(fileItems) {
+                if (fileItems.length === 0) {
+                    fileList.innerHTML = `
+                        <li class="empty-state">
+                            <i class="fas fa-folder-open empty-icon"></i>
+                            <p>暂无文件</p>
+                        </li>
+                    `;
+                    return;
+                }
+                
+                fileList.innerHTML = '';
+                
+                fileItems.forEach(file => {
+                    const fileItem = document.createElement('li');
+                    fileItem.className = 'file-item';
+                    
+                    // 获取文件图标
+                    const fileIcon = getFileIcon(file.name);
+                    
+                    // 格式化文件大小
+                    const fileSize = formatFileSize(file.size);
+                    
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <div class="file-icon">
+                                <i class="${fileIcon}"></i>
+                            </div>
+                            <div class="file-details">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-meta">${fileSize}</div>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <button class="download-btn" data-url="${file.download_url}">
+                                <i class="fas fa-download"></i>
+                                下载
+                            </button>
+                            <button class="delete-btn" data-path="${file.path}" data-name="${file.name}">
+                                <i class="fas fa-trash"></i>
+                                删除
+                            </button>
+                        </div>
+                    `;
+                    
+                    fileList.appendChild(fileItem);
+                });
+                
+                // 添加下载和删除事件监听
+                document.querySelectorAll('.download-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const fileUrl = this.getAttribute('data-url');
+                        downloadFile(fileUrl);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const filePath = this.getAttribute('data-path');
+                        const fileName = this.getAttribute('data-name');
+                        deleteFileFromGitHub(filePath, fileName);
+                    });
+                });
+            }
+            
+            // 下载文件
+            function downloadFile(fileUrl) {
+                window.open(fileUrl, '_blank');
+            }
+            
+            // 从 GitHub 删除文件
+            async function deleteFileFromGitHub(filePath, fileName) {
+                if (!confirm(`确定要删除文件 "${fileName}" 吗？`)) {
+                    return;
+                }
+                
+                try {
+                    const { repoOwner, repoName, githubToken } = githubConfigData;
+                    
+                    // 首先获取文件的 SHA
+                    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`;
+                    
+                    const fileResponse = await fetch(apiUrl);
+                    if (!fileResponse.ok) {
+                        throw new Error('获取文件信息失败');
+                    }
+                    
+                    const fileData = await fileResponse.json();
+                    
+                    // 删除文件
+                    const deleteResponse = await fetch(apiUrl, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `token ${githubToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: `Delete file: ${fileName}`,
+                            sha: fileData.sha
+                        })
+                    });
+                    
+                    if (!deleteResponse.ok) {
+                        throw new Error('删除文件失败');
+                    }
+                    
+                    alert('文件删除成功');
+                    
+                    // 重新加载文件列表
+                    loadFilesFromGitHub();
+                    
+                } catch (error) {
+                    console.error('删除文件失败:', error);
+                    alert('删除文件失败: ' + error.message);
+                }
+            }
+            
+            // 读取文件为 Base64
+            function readFileAsBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file);
+                });
+            }
+            
+            // 获取文件图标
+            function getFileIcon(fileName) {
+                const extension = fileName.split('.').pop().toLowerCase();
+                
+                const iconMap = {
+                    'pdf': 'fas fa-file-pdf',
+                    'doc': 'fas fa-file-word',
+                    'docx': 'fas fa-file-word',
+                    'xls': 'fas fa-file-excel',
+                    'xlsx': 'fas fa-file-excel',
+                    'ppt': 'fas fa-file-powerpoint',
+                    'pptx': 'fas fa-file-powerpoint',
+                    'zip': 'fas fa-file-archive',
+                    'rar': 'fas fa-file-archive',
+                    'jpg': 'fas fa-file-image',
+                    'jpeg': 'fas fa-file-image',
+                    'png': 'fas fa-file-image',
+                    'gif': 'fas fa-file-image',
+                    'mp3': 'fas fa-file-audio',
+                    'wav': 'fas fa-file-audio',
+                    'mp4': 'fas fa-file-video',
+                    'avi': 'fas fa-file-video',
+                    'txt': 'fas fa-file-alt',
+                    'js': 'fas fa-file-code',
+                    'html': 'fas fa-file-code',
+                    'css': 'fas fa-file-code'
+                };
+                
+                return iconMap[extension] || 'fas fa-file';
+            }
+            
+            // 格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+</body>
+</html>
