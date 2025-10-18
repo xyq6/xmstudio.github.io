@@ -156,6 +156,31 @@
             margin-top: 5px;
             color: #495057;
             word-break: break-all;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .copy-btn {
+            background: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-btn:hover {
+            background: #0056CC;
+        }
+        
+        .copy-btn.copied {
+            background: #28a745;
         }
         
         .requirement-list {
@@ -304,6 +329,16 @@
             .logo-container {
                 gap: 20px;
             }
+            
+            .address-value {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .copy-btn {
+                align-self: flex-end;
+            }
         }
         
         @media (max-width: 480px) {
@@ -350,6 +385,14 @@
                     </p>
                 </div>
                 
+                <!-- 开服时间 -->
+                <div class="notice-section">
+                    <p class="notice-text">
+                        <i class="fas fa-clock"></i>
+                        <strong>开服时间：</strong> 理论上每天早上9点至晚上六点，特殊情况看连接状态
+                    </p>
+                </div>
+                
                 <!-- 重要通知 -->
                 <div class="notice-section">
                     <p class="notice-text">
@@ -378,11 +421,21 @@
                     </h3>
                     <div class="address-item">
                         <div class="address-label">主要地址（推荐）：</div>
-                        <div class="address-value">cn-hz1.qwq0v0.fun:11457</div>
+                        <div class="address-value">
+                            <span>cn-hz1.qwq0v0.fun:11457</span>
+                            <button class="copy-btn" data-address="cn-hz1.qwq0v0.fun:11457">
+                                <i class="fas fa-copy"></i> 复制
+                            </button>
+                        </div>
                     </div>
                     <div class="address-item">
                         <div class="address-label">备用地址（如主地址无法连接）：</div>
-                        <div class="address-value">47.96.237.48:11457</div>
+                        <div class="address-value">
+                            <span>47.96.237.48:11457</span>
+                            <button class="copy-btn" data-address="47.96.237.48:11457">
+                                <i class="fas fa-copy"></i> 复制
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -393,7 +446,7 @@
                         服务器要求
                     </h3>
                     <ul class="requirement-list">
-                        <li><i class="fas fa-check"></i> Minecraft版本：1.21.5</li>
+                        <li><i class="fas fa-check"></i> Minecraft版本：1.21.1</li>
                         <li><i class="fas fa-check"></i> 必须使用Fabric加载器</li>
                         <li><i class="fas fa-check"></i> 必须安装FabricAPI</li>
                         <li><i class="fas fa-check"></i> 建议分配2GB以上内存</li>
@@ -412,6 +465,7 @@
                         <li><i class="fas fa-shield-alt"></i> 稳定的服务器性能</li>
                         <li><i class="fas fa-heart"></i> 活跃的管理团队</li>
                         <li><i class="fas fa-gamepad"></i> 无正版验证，所有玩家均可加入</li>
+                        <li><i class="fas fa-redo"></i> 使用红石，指令以及模组开发出来的众多玩法</li>
                     </ul>
                 </div>
             </div>
@@ -419,5 +473,37 @@
             <a href="index.html?page=main" class="back-btn">返回主页</a>
         </div>
     </section>
+
+    <script>
+        // 复制按钮功能
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const address = this.getAttribute('data-address');
+                const originalText = this.innerHTML;
+                
+                // 使用Clipboard API复制文本
+                navigator.clipboard.writeText(address).then(() => {
+                    // 复制成功后的反馈
+                    this.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                    this.classList.add('copied');
+                    
+                    // 2秒后恢复原始状态
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    // 复制失败的反馈
+                    console.error('复制失败: ', err);
+                    this.innerHTML = '<i class="fas fa-times"></i> 复制失败';
+                    
+                    // 2秒后恢复原始状态
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
