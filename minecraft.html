@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -14,10 +14,12 @@
         }
         
         body {
-            background-color: #f5f5f7;
-            color: #1d1d1f;
+            background-color: #8B6914;
+            color: #ffffff;
             line-height: 1.5;
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" fill="%23996633"/><rect x="0" y="0" width="32" height="32" fill="%237a4c1f" opacity="0.3"/><rect x="32" y="32" width="32" height="32" fill="%237a4c1f" opacity="0.3"/></svg>');
+            background-size: 64px 64px;
         }
         
         .container {
@@ -34,11 +36,13 @@
             width: 64px;
             height: 64px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             cursor: pointer;
             z-index: 1000;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             overflow: hidden;
+            border: 2px solid #5d4037;
+            background: white;
         }
         
         .team-logo img {
@@ -49,7 +53,7 @@
         
         .team-logo:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.7);
         }
         
         /* 页面内容样式 */
@@ -65,18 +69,21 @@
         .page-title {
             font-size: 36px;
             margin-bottom: 30px;
-            color: #1d1d1f;
+            color: #4caf50;
             text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .server-info {
             max-width: 800px;
             width: 100%;
-            background: white;
-            border-radius: 16px;
+            background: #2d2d2d;
+            border-radius: 8px;
             padding: 40px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             margin-bottom: 30px;
+            border: 2px solid #5d4037;
+            position: relative;
         }
         
         .logo-container {
@@ -91,10 +98,12 @@
         .server-logo {
             width: 120px;
             height: 120px;
-            border-radius: 20px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             flex-shrink: 0;
+            border: 2px solid #4caf50;
+            background: white;
         }
         
         .server-logo img {
@@ -106,10 +115,12 @@
         .team-logo-large {
             width: 120px;
             height: 120px;
-            border-radius: 20px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             flex-shrink: 0;
+            border: 2px solid #5d4037;
+            background: white;
         }
         
         .team-logo-large img {
@@ -125,7 +136,7 @@
         .info-title {
             font-size: 20px;
             margin-bottom: 15px;
-            color: #007AFF;
+            color: #4caf50;
             display: flex;
             align-items: center;
         }
@@ -135,26 +146,26 @@
         }
         
         .address-item {
-            background: #f8f9fa;
+            background: #3d3d3d;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 6px;
             margin-bottom: 10px;
-            border-left: 4px solid #007AFF;
+            border-left: 4px solid #4caf50;
         }
         
         .address-label {
             font-weight: 600;
             margin-bottom: 5px;
-            color: #1d1d1f;
+            color: #ffffff;
         }
         
         .address-value {
             font-family: 'Courier New', monospace;
-            background: #e9ecef;
+            background: #4d4d4d;
             padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: 4px;
             margin-top: 5px;
-            color: #495057;
+            color: #ffffff;
             word-break: break-all;
             display: flex;
             justify-content: space-between;
@@ -162,10 +173,10 @@
         }
         
         .copy-btn {
-            background: #007AFF;
+            background: #4caf50;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             padding: 6px 12px;
             cursor: pointer;
             font-size: 14px;
@@ -176,11 +187,11 @@
         }
         
         .copy-btn:hover {
-            background: #0056CC;
+            background: #388e3c;
         }
         
         .copy-btn.copied {
-            background: #28a745;
+            background: #2e7d32;
         }
         
         .requirement-list {
@@ -190,7 +201,7 @@
         
         .requirement-list li {
             padding: 8px 0;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #4d4d4d;
             display: flex;
             align-items: center;
         }
@@ -200,96 +211,96 @@
         }
         
         .requirement-list i {
-            color: #28a745;
+            color: #4caf50;
             margin-right: 10px;
         }
         
         .welcome-text {
             font-size: 18px;
             line-height: 1.6;
-            color: #424245;
+            color: #e0e0e0;
             text-align: center;
             margin-bottom: 20px;
         }
         
         .highlight {
-            color: #007AFF;
+            color: #4caf50;
             font-weight: 600;
         }
         
         .feature-section {
-            background: #f0f8ff;
-            border-radius: 10px;
+            background: #2d3e2d;
+            border-radius: 6px;
             padding: 20px;
             margin-top: 20px;
-            border-left: 4px solid #28a745;
+            border-left: 4px solid #4caf50;
         }
         
         .feature-text {
             font-size: 16px;
             line-height: 1.5;
-            color: #424245;
+            color: #e0e0e0;
             text-align: center;
         }
         
         .feature-text i {
-            color: #28a745;
+            color: #4caf50;
             margin-right: 8px;
         }
         
         .notice-section {
-            background: #fff3cd;
-            border-radius: 10px;
+            background: #3d3d2d;
+            border-radius: 6px;
             padding: 20px;
             margin: 20px 0;
-            border-left: 4px solid #ffc107;
+            border-left: 4px solid #ff9800;
         }
         
         .notice-text {
             font-size: 16px;
             line-height: 1.5;
-            color: #856404;
+            color: #ffcc80;
             text-align: center;
         }
         
         .notice-text i {
-            color: #ffc107;
+            color: #ff9800;
             margin-right: 8px;
         }
         
         .thanks-section {
-            background: #f8f9ff;
-            border-radius: 10px;
+            background: #2d2d3d;
+            border-radius: 6px;
             padding: 20px;
             margin-top: 20px;
-            border-left: 4px solid #007AFF;
+            border-left: 4px solid #2196f3;
         }
         
         .thanks-text {
             font-size: 16px;
             line-height: 1.5;
-            color: #424245;
+            color: #e0e0e0;
             text-align: center;
         }
         
         .thanks-link {
-            color: #007AFF;
+            color: #2196f3;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
         
         .thanks-link:hover {
-            color: #0056CC;
+            color: #1976d2;
             text-decoration: underline;
         }
         
         .back-btn {
             padding: 12px 30px;
-            background-color: #007AFF;
+            background-color: #4caf50;
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 6px;
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -298,10 +309,252 @@
             text-decoration: none;
             text-align: center;
             width: fit-content;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
         
         .back-btn:hover {
-            background-color: #0056CC;
+            background-color: #388e3c;
+        }
+        
+        /* 在线状态查看器样式 */
+        .online-status-section {
+            background: #2d2d3d;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .online-status-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2196f3;
+            display: flex;
+            align-items: center;
+        }
+        
+        .online-status-title i {
+            margin-right: 10px;
+        }
+        
+        .status-display {
+            margin-bottom: 20px;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-dot.online {
+            background-color: #4caf50;
+            box-shadow: 0 0 8px #4caf50;
+        }
+        
+        .status-dot.offline {
+            background-color: #f44336;
+            box-shadow: 0 0 8px #f44336;
+        }
+        
+        .status-text {
+            font-weight: 600;
+        }
+        
+        .player-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+        
+        .player-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #4d4d4d;
+            display: flex;
+            align-items: center;
+        }
+        
+        .player-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .player-list i {
+            color: #4caf50;
+            margin-right: 10px;
+        }
+        
+        .server-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #4d4d4d;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196f3;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+        
+        /* 管理员状态编辑区域 */
+        .admin-section {
+            background: #3d2d2d;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .admin-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f44336;
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-title i {
+            margin-right: 10px;
+        }
+        
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .password-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .password-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #5d4037;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            background: #3d3d3d;
+            color: white;
+        }
+        
+        .password-input:focus {
+            border-color: #f44336;
+            outline: none;
+        }
+        
+        .admin-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .admin-btn:hover {
+            background: #d32f2f;
+        }
+        
+        .status-edit-form {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #5d4037;
+            border-radius: 4px;
+            font-size: 16px;
+            background: #3d3d3d;
+            color: white;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #5d4037;
+            border-radius: 4px;
+            font-size: 16px;
+            background: #3d3d3d;
+            color: white;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .update-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .update-btn:hover {
+            background: #388e3c;
+        }
+        
+        .status-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .status-result.success {
+            background: #2d3e2d;
+            border: 1px solid #4caf50;
+            color: #4caf50;
+            display: block;
+        }
+        
+        .status-result.error {
+            background: #3d2d2d;
+            border: 1px solid #f44336;
+            color: #f44336;
+            display: block;
         }
         
         @media (max-width: 768px) {
@@ -339,12 +592,77 @@
             .copy-btn {
                 align-self: flex-end;
             }
+            
+            .password-input-group {
+                flex-direction: column;
+            }
+            
+            .server-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
         
         @media (max-width: 480px) {
             .logo-container {
                 flex-direction: column;
             }
+        }
+        
+        /* MC风格像素边框 */
+        .pixel-border {
+            position: relative;
+            border: 2px solid #5d4037;
+            box-shadow: 
+                inset 0 0 0 2px #8d6e63,
+                0 0 0 2px #5d4037;
+        }
+        
+        .mc-button {
+            background: #8d6e63;
+            color: white;
+            border: 2px solid #5d4037;
+            border-radius: 0;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            text-shadow: 1px 1px 0 #5d4037;
+            box-shadow: inset -2px -4px #6d4c41, inset 2px 2px #a1887f;
+        }
+        
+        .mc-button:hover {
+            background: #7d5e53;
+            box-shadow: inset -2px -4px #5d4037, inset 2px 2px #8d6e63;
+        }
+        
+        .mc-button:active {
+            box-shadow: inset 2px 4px #5d4037, inset -2px -2px #8d6e63;
+            transform: translateY(2px);
+        }
+        
+        /* 草方块顶部样式 */
+        .grass-top::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 6px 6px 0 0;
+            z-index: 1;
+        }
+        
+        .grass-top::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, transparent 0%, rgba(76, 175, 80, 0.7) 20%, rgba(76, 175, 80, 0.7) 80%, transparent 100%);
+            z-index: 2;
         }
     </style>
 </head>
@@ -359,7 +677,7 @@
         <div class="container">
             <h1 class="page-title">加入我们的MC服务器</h1>
             
-            <div class="server-info">
+            <div class="server-info pixel-border grass-top">
                 <!-- 服务器LOGO和团队LOGO -->
                 <div class="logo-container">
                     <div class="server-logo">
@@ -401,6 +719,60 @@
                     </p>
                 </div>
                 
+                <!-- 在线状态查看器 -->
+                <div class="online-status-section">
+                    <h3 class="online-status-title">
+                        <i class="fas fa-eye"></i>
+                        服务器在线状态
+                    </h3>
+                    <div class="status-display" id="status-display">
+                        <!-- 这里将显示服务器状态信息 -->
+                    </div>
+                    <button class="mc-button" id="refresh-status-btn">
+                        <i class="fas fa-sync-alt"></i> 刷新状态
+                    </button>
+                </div>
+                
+                <!-- 管理员状态编辑区域 -->
+                <div class="admin-section">
+                    <h3 class="admin-title">
+                        <i class="fas fa-user-shield"></i>
+                        管理员状态编辑
+                    </h3>
+                    <div class="password-form">
+                        <p>请输入管理员密码编辑服务器状态：</p>
+                        <div class="password-input-group">
+                            <input type="password" class="password-input" id="password-input" placeholder="输入管理员密码">
+                            <button class="admin-btn" id="admin-login-btn">
+                                <i class="fas fa-sign-in-alt"></i> 登录
+                            </button>
+                        </div>
+                        <div class="status-edit-form" id="status-edit-form">
+                            <div class="form-group">
+                                <label class="form-label" for="server-status">服务器状态</label>
+                                <select class="form-input" id="server-status">
+                                    <option value="online">在线</option>
+                                    <option value="offline">离线</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="player-count">在线玩家数量</label>
+                                <input type="number" class="form-input" id="player-count" min="0" max="50" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="player-list">在线玩家列表 (每行一个玩家名)</label>
+                                <textarea class="form-textarea" id="player-list" placeholder="玩家1&#10;玩家2&#10;玩家3"></textarea>
+                            </div>
+                            <button class="update-btn" id="update-status-btn">
+                                <i class="fas fa-save"></i> 更新状态
+                            </button>
+                        </div>
+                        <div class="status-result" id="admin-result">
+                            <!-- 这里将显示管理员操作结果 -->
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- 感谢信息 -->
                 <div class="thanks-section">
                     <p class="thanks-text">
@@ -422,8 +794,8 @@
                     <div class="address-item">
                         <div class="address-label">主要地址（推荐）：</div>
                         <div class="address-value">
-                            <span>cn-hz1.qwq0v0.fun:11457</span>
-                            <button class="copy-btn" data-address="cn-hz1.qwq0v0.fun:11457">
+                            <span>cn-hz1.qwq0v0.fun:55595</span>
+                            <button class="copy-btn" data-address="cn-hz1.qwq0v0.fun:55595">
                                 <i class="fas fa-copy"></i> 复制
                             </button>
                         </div>
@@ -431,8 +803,8 @@
                     <div class="address-item">
                         <div class="address-label">备用地址（如主地址无法连接）：</div>
                         <div class="address-value">
-                            <span>47.96.237.48:11457</span>
-                            <button class="copy-btn" data-address="47.96.237.48:11457">
+                            <span>47.96.237.48:55595</span>
+                            <button class="copy-btn" data-address="47.96.237.48:55595">
                                 <i class="fas fa-copy"></i> 复制
                             </button>
                         </div>
@@ -470,11 +842,23 @@
                 </div>
             </div>
             
-            <a href="index.html?page=main" class="back-btn">返回主页</a>
+            <a href="index.html?page=main" class="back-btn mc-button">返回主页</a>
         </div>
     </section>
 
     <script>
+        // 服务器状态数据
+        let serverStatus = {
+            online: true,
+            players: ['玩家1', '玩家2', '玩家3', '建筑大师', '红石专家'],
+            maxPlayers: 20,
+            version: '1.21.1',
+            motd: '欢迎来到星梦工作室服务器！'
+        };
+
+        // 管理员密码
+        const ADMIN_PASSWORD = "admin123";
+
         // 复制按钮功能
         document.querySelectorAll('.copy-btn').forEach(button => {
             button.addEventListener('click', function() {
@@ -503,6 +887,162 @@
                     }, 2000);
                 });
             });
+        });
+
+        // 更新状态显示
+        function updateStatusDisplay() {
+            const statusDisplay = document.getElementById('status-display');
+            
+            let statusHTML = `
+                <div class="status-indicator">
+                    <div class="status-dot ${serverStatus.online ? 'online' : 'offline'}"></div>
+                    <div class="status-text">服务器状态: ${serverStatus.online ? '在线' : '离线'}</div>
+                </div>
+                <p>服务器信息: ${serverStatus.motd}</p>
+                <p>版本: ${serverStatus.version}</p>
+                
+                <div class="server-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">${serverStatus.players.length}</div>
+                        <div class="stat-label">在线玩家</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${serverStatus.maxPlayers}</div>
+                        <div class="stat-label">最大玩家数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">${Math.round((serverStatus.players.length / serverStatus.maxPlayers) * 100)}%</div>
+                        <div class="stat-label">服务器负载</div>
+                    </div>
+                </div>
+            `;
+            
+            if (serverStatus.online && serverStatus.players.length > 0) {
+                statusHTML += `
+                    <p>当前在线玩家:</p>
+                    <ul class="player-list">
+                `;
+                
+                serverStatus.players.forEach(player => {
+                    statusHTML += `<li><i class="fas fa-user"></i> ${player}</li>`;
+                });
+                
+                statusHTML += `</ul>`;
+            } else if (serverStatus.online) {
+                statusHTML += `<p>当前没有玩家在线</p>`;
+            } else {
+                statusHTML += `<p>服务器当前离线</p>`;
+            }
+            
+            statusDisplay.innerHTML = statusHTML;
+        }
+
+        // 刷新状态按钮
+        document.getElementById('refresh-status-btn').addEventListener('click', function() {
+            updateStatusDisplay();
+            const btn = this;
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> 刷新中...';
+            btn.disabled = true;
+            
+            // 模拟刷新延迟
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }, 1000);
+        });
+
+        // 管理员登录
+        document.getElementById('admin-login-btn').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password-input');
+            const statusEditForm = document.getElementById('status-edit-form');
+            const adminResult = document.getElementById('admin-result');
+            const password = passwordInput.value;
+            
+            // 清除之前的结果
+            adminResult.className = 'status-result';
+            adminResult.innerHTML = '';
+            
+            // 检查密码
+            if (password === ADMIN_PASSWORD) {
+                // 密码正确，显示编辑表单
+                statusEditForm.style.display = 'block';
+                adminResult.classList.add('success');
+                adminResult.innerHTML = '<p><i class="fas fa-check-circle"></i> 管理员登录成功</p>';
+                
+                // 填充表单数据
+                document.getElementById('server-status').value = serverStatus.online ? 'online' : 'offline';
+                document.getElementById('player-count').value = serverStatus.players.length;
+                document.getElementById('player-list').value = serverStatus.players.join('\n');
+            } else if (password === '') {
+                // 密码为空
+                adminResult.classList.add('error');
+                adminResult.innerHTML = '<p><i class="fas fa-exclamation-triangle"></i> 请输入密码</p>';
+            } else {
+                // 密码错误
+                adminResult.classList.add('error');
+                adminResult.innerHTML = '<p><i class="fas fa-times-circle"></i> 密码错误，请重试</p>';
+            }
+            
+            // 清空密码输入框
+            passwordInput.value = '';
+        });
+
+        // 更新状态
+        document.getElementById('update-status-btn').addEventListener('click', function() {
+            const serverStatusValue = document.getElementById('server-status').value;
+            const playerCount = parseInt(document.getElementById('player-count').value);
+            const playerListText = document.getElementById('player-list').value;
+            const adminResult = document.getElementById('admin-result');
+            
+            // 更新服务器状态
+            serverStatus.online = serverStatusValue === 'online';
+            
+            // 更新玩家列表
+            if (playerListText.trim() === '') {
+                serverStatus.players = [];
+            } else {
+                serverStatus.players = playerListText.split('\n').map(player => player.trim()).filter(player => player !== '');
+            }
+            
+            // 如果玩家数量与列表不符，调整列表
+            if (playerCount !== serverStatus.players.length) {
+                if (playerCount > serverStatus.players.length) {
+                    // 添加虚拟玩家
+                    for (let i = serverStatus.players.length; i < playerCount; i++) {
+                        serverStatus.players.push(`玩家${i+1}`);
+                    }
+                } else {
+                    // 移除多余玩家
+                    serverStatus.players = serverStatus.players.slice(0, playerCount);
+                }
+            }
+            
+            // 更新显示
+            updateStatusDisplay();
+            
+            // 显示成功消息
+            adminResult.classList.add('success');
+            adminResult.innerHTML = '<p><i class="fas fa-check-circle"></i> 服务器状态已更新</p>';
+            
+            // 3秒后隐藏消息
+            setTimeout(() => {
+                adminResult.className = 'status-result';
+                adminResult.innerHTML = '';
+            }, 3000);
+        });
+
+        // 允许按Enter键提交密码
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('admin-login-btn').click();
+            }
+        });
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatusDisplay();
         });
     </script>
 </body>
